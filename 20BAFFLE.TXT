@@ -1,0 +1,13 @@
+Newtonian Baffling Calculation Routine
+
+Focal Plane Diameter ? 1.8
+2 Inch Focuser Barrel Length ? 3
+Focuser Barrel Inside Diameter ? 1.9
+Diagonal Size ? 3.5
+Focal Plane to Diagonal Length ? 15
+Initial Baffle to Diagonal Distance ? 10
+Final Baffle to Diagonal Distance ? 14.5
+
+Baffle ID =  2.366667
+Baffle OD =  4.366667
+Final Baffle D =  22.78333

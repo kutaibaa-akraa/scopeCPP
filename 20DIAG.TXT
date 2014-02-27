@@ -1,0 +1,24 @@
+                          NEWTONIAN DIAGONAL ANALYSIS             by Mel Bartels
+       This program calculates off-axis illumination and diagonal shift.
+
+    Primary mirror diameter (inches) = [20     ]
+    Primary mirror focal length (inches) = [97     ]
+    Diagonal size - m.a. (inches) = [3.5    ]
+    Diagonal to focal plane distance (inches) = [15     ]
+
+Off-axis rad.   illum.   light loss          Off-axis rad.   illum.   light loss
+===================================          ===================================
+0.00 inches    100.0 %    0.00 mag.          0.70 inches     86.6 %    0.16 mag.
+0.10 inches    100.0 %    0.00 mag.          0.80 inches     83.2 %    0.20 mag.
+0.20 inches    100.0 %    0.00 mag.          0.90 inches     79.7 %    0.25 mag.
+0.30 inches     99.1 %    0.01 mag.          1.00 inches     76.2 %    0.29 mag.
+0.40 inches     96.4 %    0.04 mag.
+0.50 inches     93.3 %    0.08 mag.                   +------------------------+
+0.60 inches     90.0 %    0.11 mag.                   | Please select:         |
+                                                      |------------------------|
+Illumination may drop to 70 % for visual use.         | a. another analysis    |
+Max field for visual use with 68 deg eyepiece         | b. change diag. size   |
+  and 7mm exit pupil = 0.81 inch radius.              | c. change diag. to     |
+                                                      |       focus distance   |
+Diagonal offset = -0.176 inches parallel to focal     | d. quit                |
+  plane, or -0.249 inches along diagonal surface.     +------------------------+

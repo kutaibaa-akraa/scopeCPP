@@ -1,0 +1,84 @@
+[KeyboardEvent Module]
+note: red/black=4
+note: blue/lightgray=113
+TextAttr 113
+
+[Handpad Module]
+ConvertTrigFlag 0
+IACA_Flag 1
+note: max=ActualMsRepsTick*FullStepSize*9
+MsArcsecSec 300
+note: fullstep~28:0.625+60:1+200:1~2.4"
+AltFullStepSizeArcsec 2.4488
+AzFullStepSizeArcsec  2.4041
+note: 1=include_refraction
+RefractFlag 1
+AltBacklashArcmin 0
+AzBacklashArcmin 0
+
+[Guide module]
+GuideArcsecSec 5
+
+[PEC module]
+FullstepsPerPECArray 400
+
+[Steppers Module]
+note: 1=no_opto_isolators
+InvertOutput 1
+MaxDelay 4000
+;MinDelay 2500
+MinDelay 600
+HsDelayX 3
+InterruptHs 100
+HoldReps 20
+MsRepsTick 30
+MsDelayX 6
+MsPause 500
+note: maxMs=10
+Ms 10
+note: rotor_centered_on_winding
+PWM[0] 100
+PWM[1] 100
+PWM[2] 100
+PWM[3] 100
+PWM[4] 100
+note: rotor_between_windings
+PWM[5] 100
+PWM[6] 90
+PWM[7] 75
+PWM[8] 50
+PWM[9] 20
+
+[PPort Module]
+PPortAddr 888
+
+[Convert Module]
+note: if_ConvertTrigFlag=1_then_these_values_should_be_0
+note: elevation_offset_to_horizon_perpendicular
+Z1Deg 0
+note: optical_axis_error_in_same_plane
+Z2Deg 0
+note: correction_to_zero_setting_of_elevation
+Z3Deg 0
+
+[ATimes Module]
+LongitudeDeg 123
+Tz 8
+
+[Test Values]
+note: 0=normal_program_execution
+note: 1=ATimes
+note: 2=Convert
+note: 3=ConvertTrig
+note: 4=Steppers
+note: 5=CMOSCLK
+note: 6=PPort
+note: 7=Handpad
+note: 8=IACA
+note: 9=Video
+TestModule 0
+TestDS 1
+TestMs 50
+TestIncrMs 3
+TestHs 24000L
+

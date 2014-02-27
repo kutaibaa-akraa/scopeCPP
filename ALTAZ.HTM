@@ -1,0 +1,502 @@
+<head>
+<title>COMPUTERIZE YOUR DOBSONIAN TELESCOPE</title>
+</head>
+
+<body>
+<h2>COMPUTERIZE YOUR DOBSONIAN TELESCOPE</h2>
+
+<h3><ul><i>...by Mel Bartels, last updated Oct 15, 1995</i></ul></h3>
+
+<p>
+the 20.4" f/4.8 computerized dob...<br>
+<img align=bottom src="scope.jpg"><br>
+<br>
+an unguided 2-minute ST6 image of M17...<br>
+<img align=bottom src="m17.gif"><br>
+<br>
+<a href="m13.gif">an unguided 2-minute ST6 image of M13</a><br>
+<br>
+<a href="m57.gif">a 10 second exposure of M57 using Berry's cookbook 245 camera</a><br>
+<br>
+<a href="m57draw.jpg">a drawing of M57 through my old 24" on the best of nights</a><br>
+<br>
+<a href="m51.gif">a 2 minute exposure of M51 using Berry's cookbook 245 camera</a><br>
+<br>
+
+<hr>
+<b>
+<a href="altaz.zip">download latest compiled version of 'altaz.zip' - includes article, images, circuit diagrams and source code</a><br>
+<br>
+<a href="mailto:mbartels@efn.org"> send e-mail to Mel Bartels</a><br>
+<br>
+<a href="http://www.efn.org/~mbartels/">goto Mel Bartels' home page</a><br>
+</b>
+<br>
+<hr>
+
+<br>
+<li><a href="#WHY">WHY COMPUTERIZE A DOB?</a><br>
+<li><a href="#SKILLS">SKILLS REQUIRED</a><br>
+<li><a href="#CPU">CPU/SCOPE INTEGRATION</a><br>
+<li><a href="#MECHANICAL">MECHANICAL ASPECTS OF THE DRIVE</a><br>
+<li><a href="#MANUAL">MOVING THE SCOPE MANUALLY</a><br>
+<li><a href="#MOTORS">STEPPER MOTORS</a><br>
+<li><a href="#DRIVE">STEPPER MOTOR DRIVE CIRCUIT</a><br>
+<li><a href="#PARTS">PARTS LISTING</a><br>
+<li><a href="#WAVEFORM">PC WAVEFORM GENERATION</a><br>
+<li><a href="#PWM">PWM SOFTWARE CONTROL ALGORITHM</a><br>
+<li><a href="#PARALLEL">PARALLEL PORT INTERFACE</a><br>
+<li><a href="#TWO">TWO-STAR CONVERSION ALGORITHM</a><br>
+<li><a href="#EVENT">EVENT DRIVEN OBJECT ORIENTED SOFTWARE</a><br>
+<li><a href="#CONTRIBUTE">CONTRIBUTED OBJECT DATA FILES</a><br>
+<li><a href="#IACA">TALKING WITH OTHER PROGRAMS VIA THE IACA</a><br>
+<li><a href="#CONFIGURING">CONFIGURING THE SOFTWARE</a><br>
+<li><a href="#OPERATING">OPERATING THE SOFTWARE</a><br>
+<li><a href="#EXPERIENCES">EXPERIENCES WITH THE 20 INCH ALTAZIMUTH DRIVE</a><br>
+<li><a href="#FURTHER">FUTHER INFORMATION</a><br>
+<li><a href="#DISCLAIMER">DISCLAIMER</a><br>
+<br>
+
+<hr>
+<a name="WHY">WHY COMPUTERIZE A DOB?</a><br>
+<br>
+I have spent many years using large home-built dobsonian scopes.  While the views through the eyepiece have been memorable, hand tracking the scopes, especially at star parties, has not been.  I can never wander too far afield, or use too high of power, lest the object be lost.  If a visitor breaks the chain of recentering for the next person, or, if the scope points idly for a couple of minutes, time must be taken to re-find the object.  A computerized finding system allows quick and efficient locating of difficult objects and gives me a few seconds to rest my eyes.  Additionally, I can see deeper into the object using higher magnifications when the object remains motionless in the center of the eyepiece for an extended time.  Different tracking rates for the moon and fast-moving comets can easily be calculated by computer.<br>
+<br>
+Consider the difference between operating a traditional versus a computerized dobsonian.  At the 1995 Oregon Star Party, someone suggested we find <a href="ngc7184.gif">NGC 7184</a>.   At the <a href="40.jpg">40 inch</a>, we pulled out Uranometria and scanned through the star charts, knowing that a NGC number of 7184 would be somewhere in Pegasus.  After several minutes, we found it on the chart.  NGC may or may not be marked on other star atlases.  Then, we devised a star hopping strategy, and scanned for the object in the 12" finder scope.  A faint fuzzy presented itself.  Up the ladder to the eyepiece of the 40" to observe.  Was it NGC 7184, or a nearby interloper?  Several minutes more of comparing star fields between the 12" finder and Uranometria did not completely convince us that we had the object.  Back at my computerized 20" equipped only with a Telrad, I punched in NGC 7184 into the planetarium program.  Up popped the object on the laptop's screen.  I pressed the move button on the scope control program, and several seconds later, it was in the center of the eyepiece's field of view.<br>
+<br>
+Amateurs who own dobsonian telescopes understand the excitement of visual imaging through big mirror telescopes.  Whether the object is a showpiece like the Orion Nebula, filling the eyepiece with bright, intricate swirls, or a cluster of galaxies like the Perseus Cluster, filling the eyepiece with a row of distant smudges of far-away light, the joy of seeing is palpable.  <a href="http://zebu.uoregon.edu/ccd.html">CCDs</a> extend this visual imaging into the realm of digital imaging.  The dobsonian revolution provided a quantum leap in imaging using big mirror dobsonians instead of the then standard 6" equatorial reflector.  A similar quantum leap can be made by attaching a CCD imager to a big fast mirror.  A few seconds integration displays bright intricate detail in objects that are only at the threshold of visual imaging.  By computerizing an existing dobsonian, an amateur can gain access to this incredible new world of imaging, and still retain all the advantages that a dobsonian provides for visual imaging, without having to start over at ground zero by purchasing a new, expensive, commercially manufactured, computerized instrument.<br>
+<br>
+The primary types of equatorial mounts that I have built in the past have been horseshoe and fork mounts.  Compared with the dobsonian mount, they are harder to make rigid, more difficult to support large thin mirrors, bulkier, and less transportable.<br>
+<br>
+Dobsonian mounts are rigid and offer large bearing surfaces to attach drives.  The altitude drive shaft can be placed underneath one altitude bearing, and the azimuth drive shaft can be placed under the rocker.  Altazimuth mounts require infinitely varying drive-rates that need to be recalculated many times a second.  Until the arrival of the inexpensive PC, the computing power needed has not been available to the average amateur.<br>
+<br>
+What is unusual about this project is that the software, via the parallel port, directly controls the waveform of each stepper motor winding, resulting in an inexpensive and simple drive of great versatility.  The steppers are made to move smoothly in microstep mode and to move at high speed by halfstepping. The alternative is to control the steppers with an expensive microprocessor equipped, microstep capable, drive package such as available from Intelligent Motion Systems for $500-800 per axis.  Even then, the PC will be busy with tight timing loops, waiting until the precise moment a fraction of a second later to update the microprocessor with new drive rates.  Altazimuth drives call for adjusting drive rates many times a second. Since the PC is busy with timing loops, why not let the PC use the time otherwise spent in the timing loops to generate voltage waveforms and calculate drive rates?  A positional algorithm is used; a velocity algorithm can cause gradual drifting because of the constantly varying drive rates.<br>
+<br>
+If one has a 386 or better PC, one can convert a dobsonian mount to this method of computer control quite inexpensively.  Each axis needs one stepper, costing $30.  The electronics total about $50.  The two machined shafts will cost a few dollars extra.  The bearing surfaces should be converted to ball-bearings riding underneath Formica in smaller scopes, and aluminum sheet in larger sizes.<br>
+<br>
+
+<hr>
+<a name="SKILLS">SKILLS REQUIRED</a><br>
+<br>
+Adding motorized motions to dobsonians has been slow to reach the amateur community because:<br>
+1. Skills are needed in several key fields including low level PC hardware programming, realtime control software programming, modern motor control theory, motor drive circuitry and an understanding of the tolerances of required scope motions.  This project offers key information in these fields and a working design with software.<br>
+2. Only in the past several years have PCs offered the combination of cheapness with enough procesing power to assume realtime control duties of coordinate conversion and motor control.<br>
+3. Until the CCD revolution, there has been little motivation to add computerized motions because the dobsonian design has been so successful.  The stability and transportability of large mirror dobsonians have made the amateur forget about the dobsonian's one big drawback: it does not track.<br>
+
+<hr>
+<a name="CPU">CPU/SCOPE INTEGRATION</a><br>
+<br>
+A half dozen levels of cpu/scope integration can be defined:<br>
+1.Using a star atlas that has been plotted by a computer or displays information stored in a computer.<br>
+2. Using a laptop beside the scope equipped with a planetarium program.<br>
+3. Attaching encoders to the scope that allows the planetarium program to display the scope's current position.<br>
+4. Using a program on the laptop that issues commands to a microprocessor in the scope's mount, ala Meade's electronic mounts or the ArchImage mount.<br>
+5. Letting the laptop to directly control the scope's motors, obviating the need for a stand-alone microprocessor.<br>
+6. Writing smart software to control the scope with more elaborate commands such simple point and go commands.  This could include slow motion scans of the Veil Nebula or a preprogrammed sequence of objects.<br>
+7. Remote operation of scope.  This project does not address this level.<br>
+
+<hr>
+<a name="MECHANICAL">MECHANICAL ASPECTS OF THE DRIVE</a><br>
+<br>
+
+the azimuth bearing...<br>
+<img align=bottom src="azbear.jpg"><br>
+<br>
+the azimuth drive...<br>
+<img align=bottom src="azdrive.jpg"><br>
+<br>
+the altitude bearing...<br>
+<img align=bottom src="altbear.jpg"><br>
+<br>
+the altitude drive...<br>
+<img align=bottom src="altdrive.jpg"><br>
+<br>
+
+The scope can be drive using several different methods.  A direct-drive system is composed of a threaded rod pressed against the rim of a large drive circle.  Threads are impressed into the rim of the drive circle either by wood putty or fiberglass.  See an article of mine in Sky and Telescope magazine, April, '79 for a description of this method.  My article was inspired by an earlier article in June '74 Sky and Telescope.<br>
+<br>
+Many modern professional scopes use roller drives consisting of large circular rollers driven by shafts.  These avoid the errors inherent in worm and gear drives.  Worm and gear errors include periodic and erratic errors.  Periodic errors are caused by the elliptical shape of the gear and by miscentering of the worm on its shaft.   Erratic errors are caused by tooth to tooth differences and by backlash when the drive changes direction.  The altitude drive consists of a 0.625" diameter machined metal drive shaft pressing against a 28" diameter wood roller faced with aluminum.  The drive shaft occupies one point at 30 degrees from vertical, the other point being a roller bearing.  The azimuth drive consists of a 0.625" drive shaft with a conical machined end that rides underneath a 28" diameter 0.25" thick aluminum circular plate.  The other two contact points are ball bearings.  Since the rollers are very large, the scope has a very high inherent stiffness.  One advantage of a dobsonian over an equatorial is that gravity naturally tensions the rollers and drive shafts.  The drive shaft can be driven by further roller reductions, by timing belt reductions, or by precision gear reducers.<br>
+<br>
+Two methods of motorizing a telescope are open loop stepper motors and closed loop servo motors with encoder feedback. With an open loop stepper motor system, the control system commands the motors to move: there is no feedback that the movement took place.  The stepper motors move in precise increments of 200 full steps per revolution.  By conservatively rating the steppers, we can insure that the motors will never stall. The common dot-matrix printer positions the print head and paper in this manner.   With servo motors we need some sort of feedback to tell us how much the motor shaft has rotated.  An encoder will give us this information but at a price of more complex hardware and software.   In practice, both methods work well.  For our purposes open loop steppers will be easier to control over the wide range of drive rates needed by an altazimuth drive.<br>
+<br>
+In the past, amateur altazimuth stepper motor drive designs have sometimes failed because of induced vibration caused by coarse step resolution.  With a PC directly controlling the voltage waveform of all four stepper motor windings,  we can easily divide each full step into many micro steps.  We want to set the stepper motor step size as a compromise between micro stepping tracking resolution and a fast slew rate.  Consider my 20" f/5 mount, working with the parts discussed earlier and working with 10 microsteps per full step:<br>
+<br>
+1 micro step = 360 degrees * 3600 arcsec/deg * 0.625"/28" (final roller) * 1/60 (gear reducer) * 1/200  (motor shaft rotation per each full step) * 1/10 (micro steps) =  0.24 arcsec.<br>
+<br>
+This is far smaller than the typical seeing disk of 2 arcsecs, and is also small enough so that vibrations are not a problem.  Gradually accelerating and decelerating the motor, we can achieve 4,000 half steps per second speed.<br>
+<br>
+maximum slew speed = 2.4 arcsec/full step * 4000 half steps/sec * 1/2 half step/full step * 1/3600 deg/arcsec = 1.3 degrees/sec.<br>
+<br>
+This is plenty fast to move such a large scope and give time to duck!<br>
+<br>
+
+<hr>
+<a name="MANUAL">MOVING THE SCOPE MANUALLY</a><br>
+<br>
+Nylon set screws tension the 5/8  drive roller in the precision gear reducers.  By loosening the tension, the scope is free to move by hand. After centering on an object, tightening the nylon set screws and inputing the right ascension and declination into the control program will re-orient the scope.<br>
+<br>
+
+<hr>
+<a name="MOTORS">STEPPER MOTORS</a><br>
+<br>
+Perhaps the name is a misnomer; this type of motor was originally conceived to run on AC synchronous power.  Instead of using smoothly varying AC, if DC is applied first to one winding, then to the next, the motor will move in step fashion, hence the name.  When the DC is made to vary synchronously, in our case by a digital method called Pulse Width Modulation, the motor returns to its original smooth running state.<br>
+<br>
+A typical stepper motor consists of a permanently magnetized rotor shaft shaped with radial teeth that rotate inside a stator that also contains teeth.   Depending on how the stator's teeth are energized, the rotor will align itself in a particular orientation.  The stator has four windings that energize various teeth.  To drive a stepper, switch the current from one stator winding to the next.<br>
+<br>
+A full step pattern, or excitation mode, goes like this:<br>
+<br>
+	full step #     winding...<br>
+			1       2       3       4<br>
+	1               ON      OFF     OFF     OFF<br>
+	2               OFF     ON      OFF     OFF<br>
+	3               OFF     OFF     ON      OFF<br>
+	4               OFF     OFF     OFF     ON<br>
+<br>
+At each full step, the rotor aligns itself with the winding that is turned ON.<br>
+The half step pattern, or excitation mode, goes like this:<br>
+<br>
+	half step #     winding...<br>
+			1       2       3       4<br>
+	1               ON      OFF     OFF     OFF<br>
+	2               ON      ON      OFF     OFF<br>
+	3               OFF     ON      OFF     OFF<br>
+	4               OFF     ON      ON      OFF<br>
+	5               OFF     OFF     ON      OFF<br>
+	6               OFF     OFF     ON      ON<br>
+	7               OFF     OFF     OFF     ON<br>
+	8               ON      OFF     OFF     ON<br>
+<br>
+When adjacent windings are ON, the rotor positions itself between the two windings.  Steppers move smoothly and are more resistant to resonance effects when half stepping.  Shaft oscillation occurs when the rotor snaps to the next winding during full stepping.  The shaft will first overshoot, then undershoot, continuing a decaying oscillation.  If the load on the shaft happens to have a harmonic period that matches the rotor's oscillation, a resonance develops between the motor and the load.  This can destroy the stepper's ability to rotate at certain rates.<br>
+<br>
+A much bigger improvement in rotor smoothness occurs when micro stepping. Winding A slowing ramps down in current following a cosine curve, while winding B slowly ramps up following a sine curve.  Applying full current to winding A positions the rotor directly over winding A.  Applying equal current to both windings A and  B positions the rotor directly between winding A and B.  Applying current to winding B that is 70% of winding A's current will position the rotor exactly 1/4 of the way between windings A and B.  Because of the inverse square nature of the electromagnetic force,  moving smoothly between windings A and B calls for a cosine/sine current pattern to be applied to the two windings.<br>
+<br>
+Limitations on micro stepping include absolute tooth error, typically 1/25 of a full step, and a deflection error caused by torque loading.  The deflection error is at a minimum when the rotor is positioned on a winding and at a maximum when positioned between windings.  If the torque loading is 10%, then the shaft's error when between windings will be 10% of a full step.   Micro stepping at 10 micro steps per full step is a reasonable compromise between smoothness and rotor position accuracy.  More micro steps can translate into a smoother motion, but will not result in increased rotor position accuracy.<br>
+<br>
+Besides excessive vibration when full stepping, stepper motors have another limitation to overcome: they don't like to spin very fast.  As the computer switches current to the windings ON and OFF, back electromotive force (e.m.f.) is generated.  When the source of the current is switched OFF, the winding's response is to quickly increase voltage to keep the current flowing.  This back e.m.f. generates voltage spikes that can destroy the power transistors.<br>
+<br>
+A flyback diode prevents the voltage spikes by giving a path for the dying current to circulate back into the winding.  However, this greatly slows the time for the current to collapse.  The result is ever lowering torque as the motor tries to spin faster.  A zener diode used with the flyback diodes allows just the voltage above the zener diode's rating to be returned to the power source.  This prevents the extreme voltage spiking while avoiding the full braking action of the flyback diodes.<br>
+<br>
+In combination with using higher voltage than the motor's continuous voltage rating, and smoothly ramping up the motor's spin, we can achieve speeds many times faster than otherwise.  Rates up to 4,000 half steps per second can be achieved with modest torque.  I use a 12 volt battery with 6 volt steppers.  This gives enough voltage to run the steppers at a high speed.  Current consumption for both motors combined is 0.1 amps while microstepping and 0.3 amps while slewing.<br>
+<br>
+
+<hr>
+<a name="DRIVE">STEPPER MOTOR DRIVE CIRCUIT</a><br>
+<br>
+
+the stepper motor driver circuit...<br>
+<img align=bottom src="stepper.gif"><br>
+<br>
+
+The PC generates voltage waveforms for the four stepper windings and outputs them via the PC parallel port resulting in a very simple drive circuit.  74LS04 hex inverters receive the output from the parallel port and provide adequate current to drive the power transistors. The power transistors should be heat-sunk.<br>
+<br>
+
+<hr>
+<a name="PARTS">PARTS LISTING</a><br>
+<br>
+from Radio Shack:<br>
+	a. (8) TIP-120 transistors<br>
+	b. (8) heat sinks for above<br>
+	c. (8) 1/4W 470 ohm resistors<br>
+	d. (8) 2.5A 100 V PIV diodes<br>
+	e. (4) 1/4W 220 ohm resistors<br>
+	f. (2) 74LS04 hex inverters<br>
+	g. (1) large instrument box<br>
+	h. (1) 276-160 circuit board<br>
+	i. (1) 25-pin cable<br>
+	j. (1) 25-pin connector kit<br>
+	k. (2) 9-pin connector kits<br>
+	l. (4) momentary push buttons - normally off, temporarily on<br>
+	m. (1) 3-way center-off switch<br>
+	n. (1) 2-way switch<br>
+	o. (1) package of small diodes<br>
+	p. (2) IC 14 pin sockets<br>
+	q. (1) 7805 power regulator chip<br>
+	r. (1) heat sink for above<br>
+	s. (2) 0.1 uF capacitors<br>
+	<br>
+ from a local well stocked electronics store:<br>
+	a. (4) 30V 5W zerner diodes<br>
+	<br>
+from a motions control outfit such as Allied Devices (1-516-223-9100):<br>
+	a. 1 gear reducer per axis ~$100 for 60:1 reducer<br>
+<br>
+from a surplus house such as C&H Sales (1-800-325-9465):<br>
+	a. (2) SSM9151 stepper motors - Slo-Syn 6 VDC .8 amp/phase 40 in-oz torque ($30)<br>
+<br>
+
+<hr>
+<a name="WAVEFORM">PC WAVEFORM GENERATION</a><br>
+<br>
+The PC uses the parallel port's eight output bits to simultaneously control the current waveform of the eight windings belonging to the two stepper motors.  The current waveforms are generated using a technique called Pulse Width Modulation.  Full current is turned ON for a certain time then turned OFF.  The cumulative effect of rapidly repeating ONs and OFFs to the motor is the same as if  smooth average current was used.   By adjusting the percentage of ON vs. OFF the resulting current can be controlled precisely.  Torque remains high whatever the motor's speed since full current is applied during the ON time.<br>
+<br>
+For adequate current resolution, the sequence of ONs and OFFs will add to 200 or more.  For illustration purposes, let's say that the total sequence per phase is 10.   If winding A is controlled by bit #0 (control word output = 1), and winding B controlled by bit #1 (control word output = 2) of the control word, then the sequence of control words for a single full step with maximum average current (ignoring the other windings on bits #2 through #7) is:<br>
+sequence of control words output (10 pulses per phase):<br>
+---------------------------------------------------------<br>
+phase #1: 1 1 1 1 1 1 1 1 1 1<br>
+phase #2: 2 2 2 2 2 2 2 2 2 2<br>
+<br>
+For full stepping at half current:<br>
+sequence of control words output (10 pulses per phase):<br>
+---------------------------------------------------------<br>
+phase #1: 1 1 1 1 1 0 0 0 0 0<br>
+phase #2: 2 2 2 2 2 0 0 0 0 0<br>
+<br>
+For half stepping at half current where the intermediate half step consists of both winding A and winding B on:<br>
+sequence of control words output (10 pulses per phase):<br>
+---------------------------------------------------------<br>
+phase #1: 1 1 1 1 1 0 0 0 0 0<br>
+phase #2: 3 3 3 3 3 0 0 0 0 0<br>
+phase #3: 2 2 2 2 2 0 0 0 0 0<br>
+<br>
+To microstep, we want to place the rotor at intermediate positions between windings A and B.  To set the rotor 25% of the way towards winding B, we want to give winding B 70% of the current that winding A has:<br>
+sequence of control words output (10 pulses per phase):<br>
+---------------------------------------------------------<br>
+winding A at 100% current:  1 1 1 1 1 1 1 1 1 1<br>
++ winding B at 70% current: 2 2 2 2 2 2 2 0 0 0<br>
+= winding A + winding B:     3 3 3 3 3 3 3 1 1 1<br>
+<br>
+Therefore, to microstep with four micro steps per full step with maximum current:<br>
+sequence of control words output (10 pulses per phase):<br>
+---------------------------------------------------------<br>
+phase #1: 1 1 1 1 1 1 1 1 1 1 ('A' current = 100%, 'B' current = 0%)<br>
+phase #2: 3 3 3 3 3 3 3 1 1 1 ('A' current = 100%, 'B' current = 70%)<br>
+phase #3: 3 3 3 3 3 3 3 3 3 3 ('A' current = 100%, 'B' current = 100%)<br>
+phase #4: 3 3 3 3 3 3 3 2 2 2 ('A' current = 70%, 'B' current = 100%)<br>
+phase #5: 2 2 2 2 2 2 2 2 2 2 ('A' current = 0%, 'B' current = 100%)<br>
+<br>
+
+<hr>
+<a name="PWM">PWM SOFTWARE CONTROL ALGORITHM</a><br>
+<br>
+To slew, full voltage is applied in the half step pattern.  The algorithm linearly ramps to full speed and finishes by ramping down to a stop.  When the slew finishes, the rotor locks for a short time to dampen shaft overshoots and oscillations.  During the slew, the PC interrupts are disabled for accurate timing of the PWMs to the steppers.  At the end of the slew, the software queries the CMOS clock in the PC to reset the DOS clock that stops when interrupts are disabled.   Movement initiates in both axes until the shorter axe's distance finishes, then movement  resumes in the remaining axis.<br>
+<br>
+Tracking  repeats a pattern of ONs and OFFs sent to the parallel port in a precise timing sequence that is spread out over a PC's bios clock tick.  A bios clock tick occurs 18.2 times per second.  The patterns of ONs and OFFs are generated at program startup time and placed in an array.  The program's configuration file allows individual adjustment of each microstep's voltage.  The number of micro steps per full step will be reduced to a minimum of two when necessary for higher micro stepping speeds.<br>
+<br>
+
+<hr>
+<a name="PARALLEL">PARALLEL PORT INTERFACE</a><br>
+<br>
+
+the parallel port interface circuit...<br>
+<img align=bottom src="circuit.gif"><br>
+<br>
+a picture of the electronics box...
+<img align=bottm src="electron.jpg"><br>
+<br>
+
+The parallel port is an ideal interface for controlling telescopes, particularly with laptops in the field.  The parallel port uses 8 bits of output, typically at port address 0x378.  On the 25 pin connector, the 8 bits of output are on pins 2 through 9, from least significant to the most significant bit.  These 8 bits of output are perfect for controlling the two stepper motors needed to drive a telescope in altazimuth mode.  The parallel port cannot provide or sink large currents directly, hence, 74LS04 hex inverters are used to interface between the parallel port and the driver transistors.<br>
+<br>
+The parallel port has 4 bits of input at port address 0x379.  These input bits are on pins 13, 12, 10,  and 11 of the 25 pin connector, with 11 being inverted.  The values shift 4 bits so that in reading the port, pin 13 activates bit 16, pin 12 activates bit 32, pin 10 activates bit 64 and pin 11 activates bit 128.  Depending on which lines are raised high, the values can range from 16 through 240.  In addition, the parallel port has 4 bits that can be either in or out at port address 0x37A.  These 4 bits show up on pins 1, 14, 16 and 17 of the 25 pin connector.  Bits 1,14 and 17 are inverted.  These values when read range from 0 to 15.  These last 4 bits of input or output are not used in this particular project.<br>
+<br>
+The handpad uses the 4 bits of parallel port input from port 0x379 and an external connection of +5 volts DC for a total of 5 lines.  A long 9-pin PC serial cable is used.  The normally open momentary push buttons are used for directional control.  The 3-way switch is used to indicate initialization #1, off, and initialization #2, while the 2-way switch set the speed: either slow microstepping or fast halfstepping. All lines tie to ground via 220 ohm resistors so that when no button or switch is activated, the handpad outputs go to ground, or logical low.  When pushing a button or moving a switch, + 5 volts DC is applied to the appropriate bit(s) of the parallel port.  Some of the buttons and switches are tied to more than one bit.  Diodes are placed on the buttons and switches outputs to insure that only the bits desired are activated.  The remaining parallel port pins of 18 through 25 are grounds.<br>
+<br>
+parallel port 25 pin connector pin-out:<br>
+		2       altitude stepper motor - green<br>
+		3       altitude stepper motor - red<br>
+		4       altitude stepper motor - green/white<br>
+		5       altitude stepper motor - red/white<br>
+		6       azimuth stepper motor - green<br>
+		7       azimuth stepper motor - red<br>
+		8       azimuth stepper motor - green/white<br>
+		9       azimuth stepper motor - red/white<br>
+		13      handpad input (pulled to ground via 220 ohm resistor)<br>
+		12      handpad input (pulled to ground via 220 ohm resistor)<br>
+		10      handpad input (pulled to ground via 220 ohm resistor)<br>
+		11      handpad input (pulled to ground via 220 ohm resistor)<br>
+		18-25   ground<br>
+<br>
+handpad:<br>
+	3-way switch left, for initializing position #1, and doing other tasks, activates pins 13,10<br>
+	3-way switch middle, neutral - does nothing, activates nothing<br>
+	3-way switch right, for initializing position #2, and doing other tasks, activates pins 12,10<br>
+	2-way switch left, slow microstepping, activates line 11<br>
+	2-way switch left, fast halfstepping, activates nothing<br>
+	upper button, momentary on=Up, activates pin 13<br>
+	lower button, momentary on =Down, activates pin 12<br>
+	left button, momentary on=CCW, activates pin 10<br>
+	right button, momentary on=CW, activates pins 13, 12<br>
+<br>
+
+<hr>
+<a name="TWO">TWO-STAR CONVERSION ALGORITHM</a><br>
+<br>
+The program uses the popular two-star conversion algorithm to translate between altazimuth and equatorial coordinates.  The scope is aligned on two widely separated stars.  Now the scope can find any other position in the sky.  The scope can also be initially set on a planet, say, soon after sunset.  After a couple of minutes of micro stepping recentering, initialize the scope on the same object for the second position.  The scope will continue to track the object, keeping it in the eyepiece field of view for an hour or two. Either the first or second initialization position can be reinitialized as often as wanted.  The two-star conversion algorithm allows the input of mount construction errors.  For instance, one altitude bearing may be a bit lower than its counterpart.  Normally this would cause a pointing error, but the conversion algorithm will compensate once given the amount of the error.<br>
+<br>
+I have included a trig conversion overlay algorithm that can be activated by setting ConvertTrigFlag to 1 in the 'config.dat' file.  Trig conversion routines have the advantage of being simpler and much faster than the matrix inversion routines that the two-star alignment algorithm uses.  The trig conversion routines need to know the latitude and longitude.  The two-star alignment algorithm, once aligned on the sky, can figure out the scope's apparent latitude and longitude.  However, one must be careful to precisely initialize the two star positions using crosshairs otherwise small pointing errors will result.  Also, mount construction errors in the 'config.dat' file should be set to zero.<br>
+<br>
+
+<hr>
+<a name="CONTRIBUTE">CONTRIBUTED OBJECT DATA FILES</a><br>
+<br>
+Included is a data file of the 24 brightest northern hemisphere stars to use for initialization.  Dale Eason contributed the Messier data file and the 5th magnitude star data file.  Jerry Pinter contributed the NGC data files ('NGC0.DAT' to 'NGC7.DAT") and the IC data file.<br>
+<br>
+
+<hr>
+<a name="EVENT">EVENT DRIVEN OBJECT ORIENTED SOFTWARE</a><br>
+<br>
+The software is event driven by either keyboard or hand paddle input.  If no events occur, then the scope moves to the current equatorial coordinates.  If the coordinates remain unchanged, the scope tracks.  If new coordinates are entered, then the scope will slew.  Slews can only be interrupted by pressing or releasing a button on the handpad.  Tracking should be paused if hot-keying out to another program.  When the program is exited, the scope's altazimuth coordinates are saved along with any initialized positions.<br>
+<br>
+The software handles backlash and has routines to handle periodic error correction, or PEC, for each axis.  A 'guide' function is also included so that guiding for a minute nulls occasional tiny residual drift.<br>
+<br>
+The PPort class handles the interface to the parallel port.  The CMOSCLK class resets the DOS clock to the CMOS battery backed clock on the motherboard.  The Atimes class works with various astronomical times.   The Coord class is used to define coordinates.  The Convert class handles the two-star coordinate conversion routines.  The KeyboardEvent class looks for keyboard input, and handpad input is handled by the HandpadEvent class.  The Video class contains routines for fast direct video writing and was contributed by Dale Eason. The PEC class handles the periodic error correction routines and the Guide class contains functions that allow automatic nulling of residual drift, and saves a record to disk of all drive corrections.<br>
+<br>
+In detail, the sequence of events for each bios clock tick (which occurs about 18.2 times a second) is:<br>
+add equatorial drift to current equatorial position,<br>
+do next status action: either a calculation or a direct write to video memory,<br>
+check for keyboard event, if none, <br>
+then check for handpad event, if none, <br>
+then check for IACA event, if none, <br>
+then move to current equatorial coordinates,<br>
+calculate new altazimuth coordinates based on new sidereal time that was claculated when bios clock tick occured,<br>
+find difference between current altazimuth coordinates and newly calculated altazimuth coordinates,<br>
+find distances to move in each axis and decide between microstepping or halfstepping, if microstepping, <br>
+then check for backlash, if none,<br>
+then spread microsteps over the bios clock tick by dividing # of microsteps into MsTicksRep, the count of PWM’s per bios clock tick: if microsteps exceeds MsTicksRep, then reduce # of microsteps per fullstep up to halfstep,<br>
+continuously generate PWMs, checking for bios clock tick at end of each PWM: a PWM consists of outputting to parallel port an already calculated array of ons and offs to the stepper motors’ windings,<br>
+when bios clock tick occurs, PWMs end and new sidereal time is calculated,<br>
+current altazimuth coordinates updated to reflect # of microsteps that actually occured,
+current altitude coordinate updated to include refraction,<br>
+current altazimuth coordinates updated to include any backlash compensations already moved,<br>
+current altazimuth coordinates updated to include PEC based on steppers rotors’ position,<br>
+current altazimuth coordinates updated to include altazimuth drift,<br>
+current altazimuth coordinates updated to include any guiding motions<br>
+<br>
+
+<hr>
+<a name="IACA">TALKING WITH OTHER PROGRAMS VIA THE IACA</a><br>
+<br>
+The Intra-Application Communication Area is a 16-byte area starting at 0040:00F0 that DOS sets aside to allow programs to talk with each other.  This area is used to exchange coordinates between the scope control program and graphically oriented CD-ROM planetarium programs such as Guide, by Bill Gray.  The planetarium program's coordinates serve as input to the scope, and the scope program tells the planetarium program where the scope is pointing.  Coordinates are assumed to be precessed to the current date.  Each program, at startup, sets all coordinates initially to zero: this way, when non-zero coordinates are found, it can be assumed that the other program put them there.<br>
+<br>
+This is how the IACA is defined:<br>
+long far* const IACA_Ra_Decimal_Hrs_Ptr = (long far*)0x4f0;<br>
+long far* const IACA_Dec_Decimal_Degrees_Ptr = (long far*)0x4f4;<br>
+long far* const Scope_Ra_Decimal_Hrs_Ptr = (long far*)0x4f8;<br>
+long far* const Scope_Dec_Decimal_Degrees_Ptr = (long far*)0x4fc;<br>
+<br>
+const Conv_Factor = 1.e+7;<br>
+// Ra and Dec in radians where 2Pi radians = 360 degrees = 24 hrs<br>
+double RaRad,DecRad;<br>
+<br>
+To put the scope coordinates into the IACA:<br>
+*Scope_Ra_Decimal_Hrs_Ptr = (long)(RaRad*RadToHr*Conv_Factor);<br>
+<br>
+*Scope_Dec_Decimal_Degrees_Ptr = (long)(DecRad*RadToDeg*Conv_Factor);<br>
+<br>
+To read the input coordinates from the IACA:<br>
+RaRad = (double)*IACA_Ra_Decimal_Hrs_Ptr/(RadToHr*Conv_Factor);<br>
+<br>
+DecRad = (double)*IACA_Dec_Decimal_Degrees_Ptr/(RadToDeg*Conv_Factor);<br>
+<br>
+
+<hr>
+<a name="CONFIGURING">CONFIGURING THE SOFTWARE</a><br>
+<br>
+Because computer capabilities vary greatly and because of widely varying scope mount characteristics, it will be necessary to spend time at the scope optimizing several values in the configuration file, called, CONFIG.DAT.  I use a 486/100 laptop.  Included in ALTAZ.ZIP is a file called CONFIG.386, which were the values I used on my old 386/20 with 387 math coprocessor.<br>
+<br>
+The screen colors can be changed by altering the TextAttr value.  The default is 113 (blue on lightgrey).  For night vision, use 4 (red on black) or cover the screen with a red filter.  Do not run ansi.sys. in config.sys<br>
+<br>
+ConvertTrigFlag tells the program to use the faster conversion routines based on spherical trig equations rather than the slower equations based on matrix inversion.  However, initialization should be done with using crosshairs in a higher power eyepiece and mount alignments errors should be zero, otherwise small pointing errors may occur.<br>
+<br>
+IACA_Flag tells the program to look for coordinates passed in via the IACA.  Currently, Guide, a CD-ROM based planetarium program, is setup to do this.<br>
+<br>
+Set RefractFlag to 1 if you wish refraction to be used, set it to 0 if you wish refraction to be display only, for instance, using the mount to simulate an equatorial mount.<br>
+<br>
+Backlash values are inputed via: AltBacklashArcmin and AzBacklashArcmin.<br>
+<br>
+FullstepsPerPECArray tells the software how many fullsteps to apply the data from the PEC.DAT file over.  Positive values in PEC.DAT indicate too much clockwise motion.  Values are in tenths of an arc second.  A total of 200 values per PEC are used.  PEC must be synchronized by placing the motor shafts in the predetermined starting position and hitting the 'PEC on' keyboard menu item selection.  Leaving all zeroes in the PEC.DAT file indicates that no PEC is desired.<br>
+<br>
+<b>Important note:</b> since the hex inverters invert the parallel port output, a flag, InvertOutput, is set to 1, telling the software to invert the output before being sent to the parallel port.  Early versions of the driver circuit used two inverters with opto-isolators.  If running with the early drive circuit, set InvertOutput to 0.<br>
+<br>
+The microstepping speed is controlled by MsArcsecSec.  Set this number to give a nice slow motion speed in the higher power eyepieces.    Try a number around 500 for a high speed 486 machine.<br>
+<br>
+The step size per full step needs to be determined experimentally.  Enter approximate step sizes for altitude and azimuth.  Set azimuth and altitude to zero.  Azimuth can be found by rotating the scope exactly 360 degrees.  Divide 360 by the azimuth reading from the control software and multiply it by the azimuth step size. Enter the new step size into the config.dat file.  Altitude can be derived from starting the tube horizontal with a bubble level and moving it upward until the level indicates 90 degrees.  Divide 90 by the altitude reading from the control software and multiply it by the altitude step size.  Enter the new value into the config.dat file.<br>
+<br>
+MaxDelay sets the starting and ending ramp speed for the high speed half stepping mode.  If the stepper jitters and does not move at all while attempting high speed halfstepping but does work in the microstepping mode, increase this value.<br>
+<br>
+MinDelay sets the maximum speed during high speed half stepping.  Set the value just below the high speed stalling point of the motors.<br>
+<br>
+DelayX may need to be increased above 1 for faster PCs when MaxDelay becomes too large to build the array used for timing the delay between halfsteps .  DelayX acts as a multiplier of MaxDelay and MinDelay.  MaxDelay of 1000 and DelayX of 1 works the same as MaxDelay of 500 and DelayX of 2, except that the array size is cut in half.<br>
+<br>
+Adjust MsRepsTick to reflect the value indicated at program exit.  Do not run power.exe or similar programs when using a laptop.  They interrupt CPU processing too much.<br>
+<br>
+MsDelayX multiplies the following PWM[] values.  This allows for smaller arrays when needing large PWM[] values for fast PCs.<br>
+<br>
+MsPause is the dummy loop repetitions at the end of every PWM[] loop.  This allows for fine low voltage resolution when using a high voltage power supply.<br>
+<br>
+PWM[0] through PWM[9] sets the voltages for individual micro steps.  In general, these values should reflect a sin/cos curve.  If the microstepping is not smooth, adjust these values. If the motors become too warm and take too much current, lower the PWM[0] through PWM[9] values, decrease MsDelayX and increase MsPause.  These values should be adjusted for minimum current draw through the steppers while tracking.  On my 20" while tracking, the steppers draw approximately 0.1 amp while producing adequate torque.<br>
+<br>
+PPortAddr is the address of the parallel port.  Almost every PC will have parallel port #1 at 888.<br>
+<br>
+ElevationOffsetToHorizonPerpendicular, OpticalAxisErrorInSamePlane, and  CorrectionToZeroSettingOfElevation should be set to zero for most mounts, unless they are obviously tilted or misaligned in some fashion.<br>
+<br>
+
+<hr>
+<a name="OPERATING">OPERATING THE SOFTWARE</a><br>
+<br>
+To operate, the scope is set up and the tube placed horizontal to the mount.  Altitude and azimuth are reset to zero.  The scope is centered on an object using the handpad.  The object's equatorial coordinates are entered and init #1 button is pressed.  After following the object for a couple of minutes using the handpad to periodically recenter the object, init #2 button is pressed.  Alternatively, a second alignment object across the sky is found, and, after entering the equatorial coordinates and centering the object, init #2 button is pressed.  For extremely precise centering, do what the pros do: offset a few degrees from a known position.  Either init #1 or #2 can be reused for this.<br>
+<br>
+Here is the operation sequence:<br>
+<br>
+Set up scope with tube horizontal to mount (ALT=0, AZ=0).<br>
+Use 'a', enter AZ=0, ALT=0.<br>
+Use 'h' to turn on init.<br>
+Use 'f', select a bright star for initialization using the "bstars.dat" file.<br>
+Use handpad to slew to chosen star.  Center in eyepiece, press INIT#1 on handpad.<br>
+Use 'f', select a second bright star for initialization using the "bstars.dat" file.<br>
+Use handpad to slew to second star, press INIT#2 on handpad.<br>
+Use 'h' to turn off init.<br>
+Use 't' to turn on tracking.<br>
+Use 'e' to enter coords of any desired object to view. <br>
+Use 'm' to automatically slew to object.<br>
+<br>
+To improve local finding/tracking accuracy:<br>
+Slew to a bright known star near the object.<br>
+Use 'e' to enter coords of star.<br>
+Use 'r' to reset system. (Or, re-init #1 or #2, whichever is closer).<br>
+Use 'e' to enter coords of object.<br>
+Use 'm' to slew to object.<br>
+<br>
+To release the motors and move the scope by hand:<br>
+Use 't' to turn tracking "OFF".<br>
+Use 'e' to enter coords of bright known star near object.<br>
+Release motors, move scope by hand and center on star.<br>
+Use 'r' to reset system.<br>
+Use 't' to turn on tracking.<br>
+Use 'e' to enter coords of object.<br>
+Use 'm' to slew to object.<br>
+<br>
+
+<hr>
+<a name="EXPERIENCES">EXPERIENCES WITH THE 20 INCH ALTAZIMUTH DRIVE</a><br>
+<br>
+Tracking works surprisingly well when following an object for a few minutes then setting the second initialization position.   Build the mount accurately: finding accuracy depends on it.  The two-star alignment method works by careful centering of the stars in high power eyepieces.   The drive tracks with no vibration problems.  It is a pleasure to rest my eyes while the scope finds the next object.  I can step to the eyepiece ready to observe instead of spending time going back and forth between star atlas and eyepiece star hopping to the object.  The enclosed, unguided M17 CCD image of two minutes duration is the very first image attempted with the 20-inch scope.  The M13 image is also a two minute unguided exposure with the ST6.  It was taken on the opening night of the Oregon Star Party.  The wind was gusting so badly that most scopes were shut down.  I could operate my scope unscathed due to an unusual fully baffled single ring upper end.  I used a borrowed ST-6 from the University of Oregon's Pine Mountain Observatory.<br>
+<br>
+With careful construction of the mount, accurate determination of the motor step size for each axis, and reasonable initialization when I first setup the scope each night, I am able to achieve less than 1/1000 error.  This means a fraction of a degree positioning error when slewing across the sky, and tracking accurate to 2 arcsec over a couple of minutes.<br>
+<br>
+With a portable scope, alignment is not always perfect, and a little drift on the order of several arcseconds per minute can show up from time to time.  This can be nulled out by using the Input Drift function, and entering the scope's observed drift in arc seconds per minute for altitude and azimuth. Reset the drift to 0 when moving to another section of the sky.<br>
+<br>
+Drift will be automatically calculated for you if you use a guiding eyepiece and follow the star for a minute.  Set the handpad status to "guide on", use the init 1 position on the handpad (press the upper switch to the left, the back to the middle), and periodically recenter the guide star.  When a minute is up, use the init 2 position on the handpad (press the upper switch to the right, then back to the middle).  Drift will be calculated, entered into the software, and displayed.  A record of all guide corrections is kept in an array that is written to "GUIDE.DAT" when the guide function is turned off.<br>
+<br>
+A good goal is to be able to keep a test guide star centered in the guiding crosshairs for one to two minutes.  This will allow a protracted series of one to two minute integrations that can be stacked later, where each single integration is long enough to have good signal to noise ratio.<br>
+<br>
+
+<hr>
+<a name="FURTHER">FURTHER INFORMATION</a><br>
+<br>
+Microcomputer Control of Telescopes by Trueblood and Genet publisher Willman-Bell<br>
+<br>
+Build Your Own Low-Cost Data Acquisition and Display Devices by Johnson publisher Tab<br>
+<br>
+Technical Information on Stepping Motors publisher Vexta Motors<br>
+<br>
+Intelligent Motion Systems (maker of microstep drives and source of technical information on steppers), 511 Norwich Ave, Taftville, CT 06380<br>
+<br>
+
+<hr>
+<a name="DISCLAIMER">DISCLAIMER</a><br>
+<br>
+Feel free to contact me with questions.  For the code, please send an SASE floppy mailer.  Over my 25 years of amateur astronomy I have been helped by several ATM experts who graciously gave of their time and hard won knowledge.  In the same spirit, I am offering the information from this project as freeware; commercial use of the code or circuit diagrams is prohibited.<br>
+<br>
+*** END OF DOCUMENT ***<br>
+
+</body>
+</html>

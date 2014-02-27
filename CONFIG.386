@@ -1,0 +1,28 @@
+Here are my config values for the Steppers Module section of config.dat
+that I used on a 386dx/20 PC:
+
+[Steppers Module]
+note: 1=no_opto_isolators
+InvertOutput 1
+MaxDelay 6000
+MinDelay 2000
+HsDelayX 1
+InterruptHs 100
+HoldReps 100
+MsRepsTick 120
+MsDelayX 1
+MsPause 0
+note: maxMs=10
+Ms 10
+note: rotor_centered_on_winding
+PWM[0] 300
+PWM[1] 300
+PWM[2] 300
+PWM[3] 300
+PWM[4] 300
+note: rotor_between_windings
+PWM[5] 300
+PWM[6] 270
+PWM[7] 210
+PWM[8] 120
+PWM[9] 20

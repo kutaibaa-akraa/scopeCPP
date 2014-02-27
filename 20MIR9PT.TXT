@@ -1,0 +1,14 @@
+
+
+
+Enter the mirror's diameter: 20.375
+
+Mirror Diameter of : 20.375
+For 3 point support: radius = 7.20365
+For 9 point support: inner radius = 4.15903
+                     outer radius = 8.31806
+                     triangle cg  = 6.18878
+
+Press any key to continue...
+
+
